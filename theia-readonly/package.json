@@ -1,0 +1,33 @@
+{
+  "name": "theia-readonly",
+  "keywords": [
+    "theia-extension",
+    "eclipse",
+    "che"
+  ],
+  "description": "Eclipse Che (Theia) - ReadOnly Extension. This extension adds support to use ReadOnly mode of editor for files that are supposed to be not edited by someone",
+  "version": "0.0.2",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "dependencies": {
+    "@theia/core": "latest",
+    "minimatch": "^3.0.4"
+  },
+  "devDependencies": {
+    "rimraf": "latest",
+    "typescript": "latest"
+  },
+  "scripts": {
+    "prepare": "yarn run clean && yarn run build",
+    "clean": "rimraf lib",
+    "build": "tsc",
+    "watch": "tsc -w"
+  },
+  "theiaExtensions": [
+    {
+      "frontend": "lib/browser/theia-read-frontend-module"
+    }
+  ]
+}

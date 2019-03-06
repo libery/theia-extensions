@@ -1,0 +1,35 @@
+{
+  "name": "theia-run",
+  "keywords": [
+    "theia",
+    "extension",
+    "eclipse",
+    "che"
+  ],
+  "description": "Eclipse Che (Theia) - Run Extension. This extension adds support to Run any Task just with One Click!",
+  "version": "0.0.2",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "dependencies": {
+    "@theia/core": "latest",
+    "@theia/task": "^0.3.19",
+    "@theia/filesystem": "latest"
+  },
+  "devDependencies": {
+    "rimraf": "latest",
+    "typescript": "latest"
+  },
+  "scripts": {
+    "prepare": "yarn run clean && yarn run build",
+    "clean": "rimraf lib",
+    "build": "tsc",
+    "watch": "tsc -w"
+  },
+  "theiaExtensions": [
+    {
+      "frontend": "lib/browser/theia-run-frontend-module"
+    }
+  ]
+}

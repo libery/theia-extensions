@@ -5,15 +5,14 @@ import URI from '@theia/core/lib/common/uri';
 
 
 export interface ReadOnlyObject {
-    path: string[];
+    readOnlyPaths: string[];
 }
 
 
 @injectable()
 export class ReadOnlyConfiguration {
     protected readonly READONLYFILEPATH = '.theia';
-    protected readonly READONLYFILE = 'config.json';
-    protected READONLYPATHS: Array<string> | null = null;
+    protected readonly READONLYFILE = 'hackerrank.json';
 
     constructor(
         @inject(WorkspaceService) 
@@ -33,16 +32,15 @@ export class ReadOnlyConfiguration {
 
     async getReadOnlyFiles(): Promise<Array<string>> {
         const configUri = await this.getConfigFileUri();
-        if (configUri && !this.READONLYPATHS) {
+        if (configUri) {
             const readOnlyPaths = await this.getConfigResolve(configUri);
-            this.READONLYPATHS = readOnlyPaths || [];
             return new Promise<Array<string>>((res, rej) => {
-                res(this.READONLYPATHS || []);
+                res(readOnlyPaths);
             });
         }
         else {
             return new Promise<Array<string>>((res, rej) => {
-                res(this.READONLYPATHS || []);
+                res([]);
             });
         }
     }
@@ -53,7 +51,7 @@ export class ReadOnlyConfiguration {
             try {
                 const fileObject = await this.filesystem.resolveContent(configFilePath, { encoding: 'utf8' });
                 const dataContent: ReadOnlyObject = JSON.parse(fileObject.content);
-                return Array.isArray(dataContent.path) ? dataContent.path : [];
+                return Array.isArray(dataContent.readOnlyPaths) ? dataContent.readOnlyPaths : [];
             } catch (err) {
                 console.log(err);
                 return [];

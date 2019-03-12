@@ -7,7 +7,7 @@
     "che"
   ],
   "description": "Eclipse Che (Theia) - Run Extension. This extension adds support to Run any Task just with One Click!",
-  "version": "0.0.2",
+  "version": "0.3.19.2",
   "files": [
     "lib",
     "src"
@@ -15,7 +15,8 @@
   "dependencies": {
     "@theia/core": "latest",
     "@theia/task": "^0.3.19",
-    "@theia/filesystem": "latest"
+    "@theia/filesystem": "latest",
+    "@theia/workspace": "latest"
   },
   "devDependencies": {
     "rimraf": "latest",

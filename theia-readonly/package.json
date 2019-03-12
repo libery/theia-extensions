@@ -6,7 +6,7 @@
     "che"
   ],
   "description": "Eclipse Che (Theia) - ReadOnly Extension. This extension adds support to use ReadOnly mode of editor for files that are supposed to be not edited by someone",
-  "version": "0.0.2",
+  "version": "0.3.19.2",
   "files": [
     "lib",
     "src"

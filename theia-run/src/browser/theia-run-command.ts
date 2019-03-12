@@ -2,7 +2,8 @@ import { inject, injectable } from "inversify";
 import {
   Command,
   CommandContribution,
-  CommandRegistry
+  CommandRegistry,
+  MessageService
 } from "@theia/core/lib/common";
 import { WorkspaceService } from "@theia/workspace/lib/browser/workspace-service";
 import { TaskService } from "@theia/task/lib/browser";
@@ -33,59 +34,73 @@ export class CustomRunCommandContribution implements CommandContribution {
 
   constructor(
     @inject(WorkspaceService)
-    protected readonly workspaceService: WorkspaceService
+    protected readonly workspaceService: WorkspaceService,
+    @inject(MessageService)
+    private readonly messageService: MessageService,
   ) { }
 
-  getWorkspaceUri(): string {
+  getWorkspaceUri(): URI | null {
     this.workspaceService.roots;
     const workspace = this.workspaceService.workspace;
-    console.log(workspace);
-    let uri: any;
+    let uri: URI;
     if (workspace) {
       uri = new URI(workspace.uri);
       return uri;
     }
-    return uri;
+    return null;
   }
 
   registerCommands(registry: CommandRegistry): void {
     registry.registerCommand(CustomRunCommands.CUSTOM_RUN_APP, {
       execute: () => {
-        let workspaceuri = this.getWorkspaceUri().toString();
-        workspaceuri = workspaceuri.replace("file://", "");
-        if (this.taskService) {
-          this.taskService
-            .run(workspaceuri, "Run")
-            .then(r => console.log("Ran Successfully", r))
-            .catch(e => console.log("error: ", e));
+        let workspaceuri = this.getWorkspaceUri();
+        if (workspaceuri) {
+          const workspacepath = workspaceuri["path"]["raw"];
+          if (this.taskService) {
+            this.taskService
+              .run(workspacepath, "Run")
+              .then(r => console.log("Ran Successfully", r))
+              .catch(e => console.log("error: ", e));
+          }
+        } else {
+          this.messageService.info('Unable to Run command. \n Go To Terminal > Run Task')
         }
       }
     });
 
     registry.registerCommand(CustomRunCommands.CUSTOM_INSTALL_APP, {
       execute: () => {
-        let workspaceuri = this.getWorkspaceUri().toString();
-        workspaceuri = workspaceuri.replace("file://", "");
-        if (this.taskService) {
-          this.taskService
-            .run(workspaceuri, "Install")
-            .then(r => console.log("Ran Successfully", r))
-            .catch(e => console.log("error: ", e));
+        let workspaceuri = this.getWorkspaceUri();
+        if (workspaceuri) {
+          const workspacepath = workspaceuri["path"]["raw"];
+          if (this.taskService) {
+            this.taskService
+              .run(workspacepath, "Install")
+              .then(r => console.log("Ran Successfully", r))
+              .catch(e => console.log("error: ", e));
+          }
+        } else {
+          this.messageService.info('Unable to Run command. \n Go To Terminal > Run Task')
         }
       }
     });
 
     registry.registerCommand(CustomRunCommands.CUSTOM_TEST_APP, {
       execute: () => {
-        let workspaceuri = this.getWorkspaceUri().toString();
-        workspaceuri = workspaceuri.replace("file://", "");
-        if (this.taskService) {
-          this.taskService
-            .run(workspaceuri, "Test")
-            .then(r => console.log("Ran Successfully", r))
-            .catch(e => console.log("error: ", e));
+        let workspaceuri = this.getWorkspaceUri();
+        if (workspaceuri) {
+          const workspacepath = workspaceuri["path"]["raw"];
+          if (this.taskService) {
+            this.taskService
+              .run(workspacepath, "Test")
+              .then(r => console.log("Ran Successfully", r))
+              .catch(e => console.log("error: ", e));
+          }
+        } else {
+          this.messageService.info('Unable to Run command. \n Go To Terminal > Run Task')
         }
       }
     });
+
   }
 }
